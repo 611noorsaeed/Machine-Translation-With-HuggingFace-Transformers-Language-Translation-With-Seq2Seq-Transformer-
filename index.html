@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .btn-custom {
+            background: #00d1b2;
+            color: #fff;
+        }
+        #outputContainer{
+         background: black;
+         width: 350px;
+         padding: 3px;
+         border-radius: 8px;
+         margin-left: 36%;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <h1 class="mb-4">AI Translation System</h1>
+        <form id="translationForm">
+            <div class="mb-3">
+                <textarea id="inputText" class="form-control" rows="5" placeholder="Enter text to translate..."></textarea>
+            </div>
+            <button type="button" id="translateButton" class="btn btn-custom">Translate</button>
+        </form>
+        <hr>
+        <div id="outputContainer">
+            <h4>Translated Text:</h4>
+            <p id="outputText"></p>
+        </div>
+    </div>
+    <footer>
+        <p>Powered by FastAPI & Transformers | © 2024</p>
+    </footer>
+    <script>
+        const form = document.getElementById("translationForm");
+        const translateButton = document.getElementById("translateButton");
+        const outputText = document.getElementById("outputText");
+
+        translateButton.addEventListener("click", async () => {
+            const inputText = document.getElementById("inputText").value;
+            const response = await fetch("/translate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ text: inputText })
+            });
+            const data = await response.json();
+            outputText.textContent = data.translation || "Error: Translation failed.";
+        });
+    </script>
+</body>
+</html>
